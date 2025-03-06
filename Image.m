@@ -20,33 +20,61 @@ classdef Image
             end
         end
         
-        function obj = Rotate(obj, Degrees)
-            tetha = Degrees * (pi/180);
-            R = [cos(tetha) -sin(tetha); sin(tetha) cos(tetha)];
-            [width, height, n] = size(obj.image);
-            
-            dim = max(width,height);
-            imgAux = zeros(dim, dim, n, 'like', obj.image);
+        % Obj 1:
 
-            for i=1:height
-                for j=1:width
-                    v = R * ([i - (dim/2); j - (dim/2)]);
-                    X = round(v(1) + dim/2);
-                    Y = round(v(2) + dim/2);
-                    
-                    if X > 0 && X <= dim && Y > 0 && Y <= dim
-                        imgAux(X, Y, :) = obj.image(i, j, :); 
-                    end
-                end
-            end
-            obj.image(:,:,:) = imgAux(:,:,:);
+        function obj = Stack(obj1, obj2, direction)
         end
 
-        function resImage = Zoom(obj, zoomFactor, zoomPoint)
-            [width, height, ~] = size(obj.image);
-            
+        function obj = Zoom(obj, percentage)
         end
         
+        function obj = CropToShape(obj, shape)
+        end
+        
+        %{ Color correction and tone adjustment
+        %   Color Spaces
+        %   Histogram
+        
+        function obj = Brightness(obj, percentage)
+        end
+
+        function obj = Contrast(obj, percentage)
+        end
+        
+        %}
+
+        function obj = Compression(obj, type)
+            % type -> Lossy or Lossless
+        end
+        
+        function obj = FadeOut(obj, percentage)
+        end
+        
+        % Obj 2:
+
+        function obj = GeometricTransformations(obj, angle, scale)
+        end
+
+        function obj = KernelConvolution(obj, blur_percentage, sharpen_percentage)
+        end
+
+        function obj = BezierCurve(obj, P0, P1, P2)
+        end
+        
+        function obj = Interpolation(obj, new_size ,type)
+            % type -> Nearest Neighbor or Bilinear or Bicubic 
+        end
+
+        function obj = Sampling(obj, new_size ,type)
+            % type -> Oversampling or Subsampling
+        end
+        
+        function obj = EdgeDetection(obj)
+        end
+
+        function obj = FourierTransform(obj)
+        end
+
     end
 end
 
