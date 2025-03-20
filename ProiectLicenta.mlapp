@@ -1,0 +1,135 @@
+classdef ProiectLicenta < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        proiectLicenta  matlab.ui.Figure
+        settings_Panel  matlab.ui.container.Panel
+        layers_Panel    matlab.ui.container.Panel
+        tools_Panel     matlab.ui.container.Panel
+        actions_Panel   matlab.ui.container.Panel
+        export_Button   matlab.ui.control.Button
+        import_Button   matlab.ui.control.Button
+        canvas_UIAxes   matlab.ui.control.UIAxes
+    end
+
+    
+    properties (Access = public)
+        CanvasImage = Image("") % Description
+    end
+    
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Code that executes after component creation
+        function autoScalingOFF(app)
+            app.canvas_UIAxes.Toolbar = [];
+            disableDefaultInteractivity(app.canvas_UIAxes);
+        end
+
+        % Button pushed function: import_Button
+        function import_ButtonPushed(app, event)
+            try
+                [file, path] = uigetfile('*.jpg;*.png;*.bmp');
+    
+                if isequal(file, 0)
+                    disp("Canceled!");
+                else
+                    fullPath = fullfile(path,file);
+                    app.CanvasImage = Image(fullPath);
+                    app.CanvasImage.showImage(app.canvas_UIAxes);
+                end
+            catch Er
+                disp('Error: ' + Er.message);
+            end
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create proiectLicenta and hide until all components are created
+            app.proiectLicenta = uifigure('Visible', 'off');
+            app.proiectLicenta.Position = [100 100 1190 670];
+            app.proiectLicenta.Name = 'Spectra';
+            app.proiectLicenta.Resize = 'off';
+
+            % Create canvas_UIAxes
+            app.canvas_UIAxes = uiaxes(app.proiectLicenta);
+            title(app.canvas_UIAxes, 'Canvas')
+            xlabel(app.canvas_UIAxes, 'X')
+            ylabel(app.canvas_UIAxes, 'Y')
+            zlabel(app.canvas_UIAxes, 'Z')
+            app.canvas_UIAxes.Position = [109 1 838 611];
+
+            % Create actions_Panel
+            app.actions_Panel = uipanel(app.proiectLicenta);
+            app.actions_Panel.BackgroundColor = [0.8 0.8 0.8];
+            app.actions_Panel.Position = [1 622 1190 49];
+
+            % Create import_Button
+            app.import_Button = uibutton(app.actions_Panel, 'push');
+            app.import_Button.ButtonPushedFcn = createCallbackFcn(app, @import_ButtonPushed, true);
+            app.import_Button.Position = [8 8 113 34];
+            app.import_Button.Text = 'Import';
+
+            % Create export_Button
+            app.export_Button = uibutton(app.actions_Panel, 'push');
+            app.export_Button.Position = [126 8 113 34];
+            app.export_Button.Text = 'Export';
+
+            % Create tools_Panel
+            app.tools_Panel = uipanel(app.proiectLicenta);
+            app.tools_Panel.TitlePosition = 'centertop';
+            app.tools_Panel.Title = 'Tools';
+            app.tools_Panel.BackgroundColor = [0.8 0.8 0.8];
+            app.tools_Panel.Position = [1 1 100 611];
+
+            % Create layers_Panel
+            app.layers_Panel = uipanel(app.proiectLicenta);
+            app.layers_Panel.Title = 'Layers';
+            app.layers_Panel.BackgroundColor = [0.8 0.8 0.8];
+            app.layers_Panel.Position = [957 1 234 270];
+
+            % Create settings_Panel
+            app.settings_Panel = uipanel(app.proiectLicenta);
+            app.settings_Panel.Title = 'Settings';
+            app.settings_Panel.BackgroundColor = [0.8 0.8 0.8];
+            app.settings_Panel.Position = [957 284 234 327];
+
+            % Show the figure after all components are created
+            app.proiectLicenta.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = ProiectLicenta
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.proiectLicenta)
+
+            % Execute the startup function
+            runStartupFcn(app, @autoScalingOFF)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.proiectLicenta)
+        end
+    end
+end
