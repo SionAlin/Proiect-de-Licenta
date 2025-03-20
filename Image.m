@@ -1,14 +1,42 @@
 classdef Image
     properties
+        path
         image
     end
     
     methods
+        % Constructor
         function obj = Image(Path)
-            %Constructor
+            if nargin == 0 || isequal(Path, "")
+                obj.path = "";
+                obj.image = [];
+            else
+                obj.path = Path;
+                obj.image = imread(Path);
+            end
+        end
+        
+        % Set and update
+        function obj = setPath(obj, Path)
+            obj.path = Path;
             obj.image = imread(Path);
         end
         
+        % Show the image
+        function obj = showImage(obj, Axes)
+            try
+                if ~isempty(obj.image) && (isnumeric(obj.image) || islogical(obj.image))
+                    imshow(obj.image, 'Parent', Axes);
+                else
+                    error('No valid image to display')
+                end
+            catch Er
+                disp('Error: ' + Er.message);
+            end
+        end
+        
+        % Relevant methods
+
         function obj = Flip(obj, Direction)
             switch lower(Direction)
                 case "horizontal"
@@ -77,4 +105,3 @@ classdef Image
 
     end
 end
-
