@@ -71,8 +71,24 @@ classdef Image
         
         %}
 
-        function obj = Compression(obj, type)
-            % type -> Lossy or Lossless
+        function obj = Compression(obj, k)
+            img = im2double(obj.image);
+
+            R = img(:,:,1);
+            G = img(:,:,2);
+            B = img(:,:,3);
+
+            [U_R, S_R, V_R] = svd(R);
+            [U_G, S_G, V_G] = svd(G);
+            [U_B, S_B, V_B] = svd(B);
+
+            com_R = U_R(:,1:k) * S_R(1:k,1:k) * V_R(:,1:k)';
+            com_G = U_G(:,1:k) * S_G(1:k,1:k) * V_G(:,1:k)';
+            com_B = U_B(:,1:k) * S_B(1:k,1:k) * V_B(:,1:k)';
+
+            com = cat(3, com_R, com_B, com_G);
+
+            obj.image = com;
         end
         
         function obj = FadeOut(obj, percentage)
@@ -105,3 +121,4 @@ classdef Image
 
     end
 end
+
