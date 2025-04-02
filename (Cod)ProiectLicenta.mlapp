@@ -2,14 +2,23 @@ classdef ProiectLicenta < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
-        proiectLicenta  matlab.ui.Figure
-        settings_Panel  matlab.ui.container.Panel
-        layers_Panel    matlab.ui.container.Panel
-        tools_Panel     matlab.ui.container.Panel
-        actions_Panel   matlab.ui.container.Panel
-        export_Button   matlab.ui.control.Button
-        import_Button   matlab.ui.control.Button
-        canvas_UIAxes   matlab.ui.control.UIAxes
+        proiectLicenta          matlab.ui.Figure
+        exporting_Panel         matlab.ui.container.Panel
+        filename_EditField      matlab.ui.control.EditField
+        FileNameEditFieldLabel  matlab.ui.control.Label
+        filetype_DropDown       matlab.ui.control.DropDown
+        FileTypeDropDownLabel   matlab.ui.control.Label
+        quality_Slider          matlab.ui.control.Slider
+        Label                   matlab.ui.control.Label
+        cancel_Button           matlab.ui.control.Button
+        save_Button             matlab.ui.control.Button
+        settings_Panel          matlab.ui.container.Panel
+        layers_Panel            matlab.ui.container.Panel
+        tools_Panel             matlab.ui.container.Panel
+        actions_Panel           matlab.ui.container.Panel
+        export_Button           matlab.ui.control.Button
+        import_Button           matlab.ui.control.Button
+        canvas_UIAxes           matlab.ui.control.UIAxes
     end
 
     
@@ -31,7 +40,16 @@ classdef ProiectLicenta < matlab.apps.AppBase
         function import_ButtonPushed(app, event)
             try
                 [file, path] = uigetfile('*.jpg;*.png;*.bmp');
-    
+
+                tempFile = strsplit(file,'.');
+                app.filename_EditField.Value = tempFile{1};
+                
+                type = strsplit(file,'.');
+                if length(type) > 1
+                    extension = upper(type{end}); 
+                    app.filetype_DropDown.Value = extension;
+                end
+
                 if isequal(file, 0)
                     disp("Canceled!");
                 else
@@ -42,6 +60,37 @@ classdef ProiectLicenta < matlab.apps.AppBase
             catch Er
                 disp('Error: ' + Er.message);
             end
+        end
+
+        % Button pushed function: export_Button
+        function export_ButtonPushed(app, event)
+            if  isequal(app.CanvasImage.image, [])
+                disp("Error: Canvas is empty");
+            else
+                app.exporting_Panel.Visible = 'on';
+            end
+        end
+
+        % Button pushed function: cancel_Button
+        function cancel_ButtonPushed(app, event)
+            app.exporting_Panel.Visible = "off";
+        end
+
+        % Button pushed function: save_Button
+        function save_ButtonPushed(app, event)
+            k = round(app.quality_Slider.Value); 
+            app.CanvasImage = app.CanvasImage.Compression(k);
+
+            [path, file, ext] = fileparts(app.CanvasImage.path); 
+
+            newFileName = strcat(app.filename_EditField.Value, '.', lower(app.filetype_DropDown.Value));
+            newFullPath = fullfile(path, newFileName); 
+
+            imwrite(app.CanvasImage.image, newFullPath);
+
+            app.exporting_Panel.Visible = "off";
+            app.CanvasImage = Image("");
+            cla(app.canvas_UIAxes);
         end
     end
 
@@ -78,6 +127,7 @@ classdef ProiectLicenta < matlab.apps.AppBase
 
             % Create export_Button
             app.export_Button = uibutton(app.actions_Panel, 'push');
+            app.export_Button.ButtonPushedFcn = createCallbackFcn(app, @export_ButtonPushed, true);
             app.export_Button.Position = [126 8 113 34];
             app.export_Button.Text = 'Export';
 
@@ -99,6 +149,57 @@ classdef ProiectLicenta < matlab.apps.AppBase
             app.settings_Panel.Title = 'Settings';
             app.settings_Panel.BackgroundColor = [0.8 0.8 0.8];
             app.settings_Panel.Position = [957 284 234 327];
+
+            % Create exporting_Panel
+            app.exporting_Panel = uipanel(app.proiectLicenta);
+            app.exporting_Panel.Title = 'Export';
+            app.exporting_Panel.Visible = 'off';
+            app.exporting_Panel.Position = [957 284 234 327];
+
+            % Create save_Button
+            app.save_Button = uibutton(app.exporting_Panel, 'push');
+            app.save_Button.ButtonPushedFcn = createCallbackFcn(app, @save_ButtonPushed, true);
+            app.save_Button.Position = [125 11 100 22];
+            app.save_Button.Text = 'Save';
+
+            % Create cancel_Button
+            app.cancel_Button = uibutton(app.exporting_Panel, 'push');
+            app.cancel_Button.ButtonPushedFcn = createCallbackFcn(app, @cancel_ButtonPushed, true);
+            app.cancel_Button.Position = [10 11 100 22];
+            app.cancel_Button.Text = 'Cancel';
+
+            % Create Label
+            app.Label = uilabel(app.exporting_Panel);
+            app.Label.HorizontalAlignment = 'right';
+            app.Label.Position = [10 185 42 22];
+            app.Label.Text = 'Quality';
+
+            % Create quality_Slider
+            app.quality_Slider = uislider(app.exporting_Panel);
+            app.quality_Slider.Position = [62 194 156 3];
+            app.quality_Slider.Value = 100;
+
+            % Create FileTypeDropDownLabel
+            app.FileTypeDropDownLabel = uilabel(app.exporting_Panel);
+            app.FileTypeDropDownLabel.HorizontalAlignment = 'right';
+            app.FileTypeDropDownLabel.Position = [5 229 53 22];
+            app.FileTypeDropDownLabel.Text = 'File Type';
+
+            % Create filetype_DropDown
+            app.filetype_DropDown = uidropdown(app.exporting_Panel);
+            app.filetype_DropDown.Items = {'JPG', 'PNG', 'BMP'};
+            app.filetype_DropDown.Position = [69 229 160 22];
+            app.filetype_DropDown.Value = 'JPG';
+
+            % Create FileNameEditFieldLabel
+            app.FileNameEditFieldLabel = uilabel(app.exporting_Panel);
+            app.FileNameEditFieldLabel.HorizontalAlignment = 'right';
+            app.FileNameEditFieldLabel.Position = [5 267 60 22];
+            app.FileNameEditFieldLabel.Text = 'File Name';
+
+            % Create filename_EditField
+            app.filename_EditField = uieditfield(app.exporting_Panel, 'text');
+            app.filename_EditField.Position = [69 265 160 26];
 
             % Show the figure after all components are created
             app.proiectLicenta.Visible = 'on';
