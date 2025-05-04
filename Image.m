@@ -63,10 +63,28 @@ classdef Image
         %   Color Spaces
         %   Histogram
         
-        function obj = Brightness(obj, percentage)
-        end
+        function obj = Brightness_Contrast(obj, value_Brightness, value_Contrast)
+            try
+                if ((value_Brightness >= -100) && (value_Brightness <= 100))
+                    double_image = double(obj.image);
 
-        function obj = Contrast(obj, percentage)
+                    percentage = (value_Brightness / 100) * 255;
+                    
+                    double_image = double_image + percentage;
+                    
+                    if ~(value_Contrast >= 0 && value_Contrast <= 5)
+                        error("Contrast value must be between 0 and 5");
+                    end
+
+                    double_image = (double_image - 128) * value_Contrast + 128;
+
+                    obj.image = uint8(min(max(double_image,0),255));
+                else
+                    error("Brightness value must be between -100 and 100.");
+                end
+            catch Er
+                disp("Error: " + Er.message);
+            end
         end
         
         %}
