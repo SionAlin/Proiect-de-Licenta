@@ -1,0 +1,120 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=cyan, citecolor=green, filecolor=black, urlcolor=blue}
+\usepackage{epstopdf}
+\usepackage{makeidx}
+\usepackage{tocloft}
+\usepackage[margin=1in]{geometry}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\contentsname}{Cuprins}
+\renewcommand{\bibname}{Bibliografie}
+\renewcommand{\chaptername}{Capitolul}
+\renewcommand{\appendixname}{Anexa}
+%\theoremstyle{definition}
+\newtheorem{defn}{Defini\c tia}[section]
+\makeindex
+\begin{document}
+\pagenumbering{roman}
+
+\begin{titlepage}
+\begin{center}
+
+\large
+\textsc{Universitatea ``Alexandru Ioan Cuza'' din Ia\c{s}i}\\
+\textsc{Facultatea de Matematic\u{a}}
+
+
+\vfill
+
+\Huge
+\textsc{Lucrare de licen\c t\u a}\\[0.8cm]
+\huge
+\textbf{Procesarea imaginilor folosind softul MATLAB}
+
+\vfill
+
+\begin{minipage}[t]{0.49\textwidth}
+
+\begin{flushleft}
+\large
+\textbf{Conduc\u{a}tor \c{s}tiin\c{t}ific:}\\
+{Asist. Dr. Chelmuş Teodor}
+\end{flushleft}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\begin{flushright}
+\large
+\textbf{Student:} \\
+{Sion Alin-Mih\u{a}i\c{t}\u{a}}\\
+\end{flushright}
+\end{minipage}
+
+\vfill
+
+\large
+\centering
+Sesiunea (iulie sau februarie), anul\\
+Ia\c{s}i
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\thispagestyle{empty}
+\fancyhf{}
+\clearpage
+\pagenumbering{arabic}
+
+\chapter*{Introducere}
+\addcontentsline{toc}{chapter}{Introducere}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+\chapter{Titlu capitol}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+\section{Titlu sec\c tiune}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\begin{equation}\label{eq1}
+e^{i\pi}+1=0.
+\end{equation}
+\begin{defn}
+Text defini\c tie
+\end{defn}
+{\bf Exemplu de citare:}
+\^{I}n lucrarea \cite{Hardy}, G.H. Hardy descrie frumuse\c tea mate\-ma\-ticii \c si aseam\u an\u a matematicianul cu un pictor sau un poet: ``A mathematician, like a painter or a poet, is a maker of patterns.
+If his patterns are more permanent than theirs, it is because they are made with ideas. A painter makes patterns with shapes and colours, a poet with words. [...] A mathematician, on the other hand,
+has no material to work with but ideas, and so his patterns are likely to last longer, since ideas wear less with time than words. The mathematician’s patterns, like the painter’s or the poet’s must be beautiful; the ideas like the colours or the words, must fit together in a harmonious way. Beauty is the first test: there is no permanent place in the world for ugly mathematics.''
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.4]{fractal.png}
+\caption{{\footnotesize{Sursa foto: https://people.math.rochester.edu/faculty/jnei/FRACTALS.html}}}
+\end{figure}
+\end{center}
+
+\chapter{Concluzii}
+Capitol final
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{chapter}{Bibliografie}
+
+\bibitem{Hardy} G.H. Hardy, {\it A Mathematician's Apology}, Cambridge University Press, 1992,
+    https://doi.org/10.1017/CBO9781139644112.
+\bibitem{HoCrRo} F.R. Hoots, L.L. Crawford, R.L. Roehrich, {\it An analytic method to determine future close approaches between satellites}. Celestial Mechanics 33, 143-158 (1984). \href{https://doi.org/10.1007/}{https://doi.org/10.1007/} BF01234152.
+
+\bibitem{AbSt} M. Abramowitz, I. A. Stegun, {\it Handbook of mathematical functions, with formulas, graphs, and mathematical tables}, National Bureau of Standards, Applied Mathematics Series - 55, 1964.
+
+\end{thebibliography}
+
+
+\end{document}
+
