@@ -1,0 +1,4 @@
+1. https://www.geeksforgeeks.org/image-zooming-in-matlab/
+2. https://www.youtube.com/watch?v=K2XLXlyPqCA (First Principles of Computer Vision)
+3. https://databookuw.com/ 
+4. https://www.youtube.com/watch?v=oXlwWbU8l2o&t=2654s
